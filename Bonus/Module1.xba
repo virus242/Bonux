@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Module1" script:language="StarBasic" script:moduleType="normal">REM  *****  BASIC  *****
+
+Sub calcRowForBonus
+	Dim CurrentRow As Integer
+    Dim Result As Double
+    
+    &apos; Find the last filled row in column A
+    CurrentRow = 0
+    Do While ThisComponent.Sheets(0).getCellByPosition(0, CurrentRow).getString() &lt;&gt; &quot;&quot;
+        &apos; Initialize the result for the current row
+        Result = 0
+        
+        &apos; Perform (A / B) * C for each row
+        Dim AValue As Double
+        Dim BValue As Double
+        Dim CValue As Double
+
+        AValue = ThisComponent.Sheets(0).getCellByPosition(0, CurrentRow).getValue()
+        BValue = ThisComponent.Sheets(0).getCellByPosition(1, CurrentRow).getValue()
+        CValue = ThisComponent.Sheets(0).getCellByPosition(2, CurrentRow).getValue()
+        
+        &apos; Check for non-zero divisor before performing the division
+        If BValue &lt;&gt; 0 Then
+            Result = (AValue / BValue) * CValue
+        End If
+        
+        &apos; Save the result in column D
+        ThisComponent.Sheets(0).getCellByPosition(3, CurrentRow).setValue(Result)
+        
+        &apos; Move to the next row
+        CurrentRow = CurrentRow + 1
+    Loop
+End Sub
+</script:module>
